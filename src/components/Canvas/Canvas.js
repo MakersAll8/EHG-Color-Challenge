@@ -1,14 +1,24 @@
-import React, {useEffect, useRef} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import classes from './Canvas.css';
 import * as util from '../../shared/distance';
 import {colorSteps} from '../../shared/color';
+import Button from "../UI/Button/Button";
 
-const Canvas = (props) => {
+const rowCount = 128
+const columnCount = 256
 
+const Canvas = () => {
     const randomIndex = () => {
-        // return Math.floor(Math.random() * 32768);
-        return 0
+        return Math.floor(Math.random() * 32768);
+        // return 0
     }
+    const [initialColorIndex, setInitialColorIndex] = useState(randomIndex())
+
+    const handleGenerateAnother = () => {
+        setInitialColorIndex(randomIndex())
+    }
+
+
     const canvasRef = useRef();
 
     useEffect(() => {
@@ -20,60 +30,64 @@ const Canvas = (props) => {
         let steps = colorSteps()
 
         // pick a random color for the center point
-        const initialColorIndex = randomIndex()
+        // const initialColorIndex = randomIndex()
         const centerColor = steps[initialColorIndex]
 
+        // calculate distance from designated random color
         let stepsDistance = steps.map((step) => {
             return step.concat([util.vectorDistance(step, centerColor)])
         })
-
+        // sort colors based on distance
         stepsDistance.sort((c1, c2) => {
             return c1[3] - c2[3]
         })
 
-        let imageData = ctx.createImageData(256, 128)
-
+        // initialize matrix for displaying colors in a rectangle
         let outputColors = []
-        for (let i = 0; i < 128; i++) {
+        for (let i = 0; i < rowCount; i++) {
             outputColors[i] = []
-            for (let j = 0; j < 256; j++) {
+            for (let j = 0; j < columnCount; j++) {
                 outputColors[i][j] = null
             }
         }
 
-        for (let i = 0; i < 128; i++) {
-            for (let j = 0; j < 256; j++) {
-                if(outputColors[i][j]===null){
+        // traverse the matrix and assign a color
+        for (let i = 0; i < rowCount; i++) {
+            for (let j = 0; j < columnCount; j++) {
+                if (outputColors[i][j] === null) {
                     outputColors[i][j] = stepsDistance.shift()
                 }
             }
         }
 
+        // flatten the matrix into an array
         let data = []
         let k = 0;
-        for (let i = 0; i < 128; i++) {
-            for (let j = 0; j < 256; j++) {
+        for (let i = 0; i < rowCount; i++) {
+            for (let j = 0; j < columnCount; j++) {
                 data[k] = outputColors[i][j][0]
-                data[k+1] = outputColors[i][j][1]
-                data[k+2] = outputColors[i][j][2]
-                data[k+3] = 255
-                k+=4
+                data[k + 1] = outputColors[i][j][1]
+                data[k + 2] = outputColors[i][j][2]
+                data[k + 3] = 255
+                k += 4
             }
         }
 
-        for(let i = 0; i < imageData.data.length; i++){
+        // create image data for canvas
+        let imageData = ctx.createImageData(columnCount, rowCount)
+        for (let i = 0; i < imageData.data.length; i++) {
             imageData.data[i] = data[i]
         }
+        // draw on canvas
+        ctx.putImageData(imageData, 20,10)
 
-
-
-        ctx.putImageData(imageData, 0, 0)
-
-
-    }, [])
+    }, [initialColorIndex])
 
     return (
-        <canvas className={classes.Canvas} ref={canvasRef} width={props.width} height={props.height}/>
+        <div className={classes.Canvas}>
+            <canvas className={classes.Canvas} ref={canvasRef}/>
+            <Button clicked={handleGenerateAnother} btnType="Success">Generate Another Image</Button>
+        </div>
     )
 }
 
