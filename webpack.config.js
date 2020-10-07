@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const WorkerPlugin = require('worker-plugin');
 
 module.exports = {
     // specify entry point and output
@@ -12,6 +13,10 @@ module.exports = {
     // specify babel loader
     module: {
         rules: [
+            // {
+            //     test: /\.worker\.js$/,
+            //     use: { loader: 'worker-loader' },
+            // },
             {
                 test: /\.js?$/,
                 exclude: /node_modules/,
@@ -61,6 +66,7 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             template: './public/index.html'
-        })
+        }),
+        new WorkerPlugin(),
     ]
 }
