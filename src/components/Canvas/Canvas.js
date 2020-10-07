@@ -35,7 +35,7 @@ const Canvas = () => {
 
         // calculate distance from designated random color
         let stepsDistance = steps.map((step) => {
-            return step.concat([util.sRgbDistance(step, centerColor)])
+            return step.concat([util.cieLabDistance94(step, centerColor)])
         })
         // sort colors based on distance
         stepsDistance.sort((c1, c2) => {
@@ -60,24 +60,19 @@ const Canvas = () => {
             }
         }
 
-        // flatten the matrix into an array
-        let data = []
+        // flatten matrix into data array
+        let imageData = ctx.createImageData(columnCount, rowCount)
         let k = 0;
         for (let i = 0; i < rowCount; i++) {
             for (let j = 0; j < columnCount; j++) {
-                data[k] = outputColors[i][j][0]
-                data[k + 1] = outputColors[i][j][1]
-                data[k + 2] = outputColors[i][j][2]
-                data[k + 3] = 255
+                imageData.data[k] = outputColors[i][j][0]
+                imageData.data[k + 1] = outputColors[i][j][1]
+                imageData.data[k + 2] = outputColors[i][j][2]
+                imageData.data[k + 3] = 255
                 k += 4
             }
         }
 
-        // create image data for canvas
-        let imageData = ctx.createImageData(columnCount, rowCount)
-        for (let i = 0; i < imageData.data.length; i++) {
-            imageData.data[i] = data[i]
-        }
         // draw on canvas
         ctx.putImageData(imageData, 20,10)
 
