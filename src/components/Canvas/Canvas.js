@@ -35,7 +35,7 @@ const Canvas = () => {
 
         // calculate distance from designated random color
         let stepsDistance = steps.map((step) => {
-            return step.concat([util.vectorDistance(step, centerColor)])
+            return step.concat([util.sRgbDistance(step, centerColor)])
         })
         // sort colors based on distance
         stepsDistance.sort((c1, c2) => {

@@ -6,7 +6,7 @@ export const vectorDistance = (color1, color2) => {
     )
 }
 
-export const nonLinearDistance = (color1, color2) => {
+export const sRgbDistance = (color1, color2) => {
     const rBar = (color1[0] + color2[0]) / 2
     if (rBar <= 128) {
         return (
