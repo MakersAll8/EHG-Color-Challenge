@@ -3,10 +3,9 @@ import classes from './Canvas.css';
 import {colorSteps} from '../../shared/color';
 import Button from "../UI/Button/Button";
 import ReactCountdownClock from 'react-countdown-clock'
+
 const rowCount = 128
 const columnCount = 256
-
-
 
 const Canvas = () => {
     const randomIndex = () => {
