@@ -38,6 +38,14 @@ const Canvas = () => {
         // do the rest after receiving results
         worker.onmessage = e => {
             let outputColors = e.data
+            for (let i = 0; i < rowCount; i++) {
+                for (let j = 0; j < columnCount; j++) {
+                    if(!outputColors[i][j]){
+                        console.log('coordinate', i, ",",j)
+                    }
+                }
+            }
+
             // flatten matrix into data array
             let imageData = ctx.createImageData(columnCount, rowCount)
             let k = 0;
@@ -46,7 +54,7 @@ const Canvas = () => {
                     imageData.data[k] = outputColors[i][j][0]
                     imageData.data[k + 1] = outputColors[i][j][1]
                     imageData.data[k + 2] = outputColors[i][j][2]
-                    imageData.data[k + 3] = 255
+                    imageData.data[k + 3] = 255 // alpha
                     k += 4
                 }
             }

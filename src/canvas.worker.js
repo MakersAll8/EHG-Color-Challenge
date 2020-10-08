@@ -1,6 +1,6 @@
 import * as util from "./shared/distance";
 
-addEventListener('message', e=>{
+addEventListener('message', e => {
     const data = e.data
     const rowCount = 128
     const columnCount = 256
@@ -21,13 +21,19 @@ addEventListener('message', e=>{
             outputColors[i][j] = null
         }
     }
-    // traverse the matrix and assign a color
-    for (let i = 0; i < rowCount; i++) {
-        for (let j = 0; j < columnCount; j++) {
-            if (outputColors[i][j] === null) {
-                outputColors[i][j] = stepsDistance.shift()
+
+    // traversing closest Manhattan neighbors
+    outputColors[util.centerPoint[0]][util.centerPoint[1]] = stepsDistance.shift()
+    for (let i = 0; i <= util.centerPoint[0] + util.centerPoint[1]; i++) {
+        let neighbors = util.centerManhattanNeighbors(i)
+        for (let n = 0; n < neighbors.length; n++) {
+            let row = neighbors[n][0]
+            let column = neighbors[n][1]
+            if (outputColors[row][column] === null) {
+                outputColors[row][column] = stepsDistance.shift()
             }
         }
     }
+
     postMessage(outputColors)
 })
