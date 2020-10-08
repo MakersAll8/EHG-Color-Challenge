@@ -7,6 +7,9 @@ import ReactCountdownClock from 'react-countdown-clock'
 const rowCount = 128
 const columnCount = 256
 
+// general all 15-bit colors
+const steps = colorSteps()
+
 const Canvas = () => {
     const randomIndex = () => {
         return Math.floor(Math.random() * 32768);
@@ -23,9 +26,6 @@ const Canvas = () => {
         // get ref to canvas
         const canvasObj = canvasRef.current;
         const ctx = canvasObj.getContext('2d');
-
-        // general all 15-bit colors
-        let steps = colorSteps()
 
         // pick a random color for the center point
         // const initialColorIndex = randomIndex()
