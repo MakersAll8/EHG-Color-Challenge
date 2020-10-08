@@ -34,7 +34,7 @@ export const redMeanDistance = (color1, color2) => {
     )
 }
 
-export const cieLabDistance94 = (c1, c2) => {
+export const cieLabDistance = (c1, c2) => {
     let lab1 = rgb2lab(c1)
     let lab2 = rgb2lab(c2)
 

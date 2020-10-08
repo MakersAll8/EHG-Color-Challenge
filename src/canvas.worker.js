@@ -6,7 +6,10 @@ addEventListener('message', e => {
     const columnCount = 256
     // calculate distance from designated random color
     let stepsDistance = data.steps.map((step) => {
-        return step.concat([util.cieLabDistance94(step, data.centerColor)])
+        return step.concat([util.cieLabDistance(step, data.centerColor)])
+        // return step.concat([util.vectorDistance(step, data.centerColor)])
+        // return step.concat([util.sRgbDistance(step, data.centerColor)])
+        // return step.concat([util.redMeanDistance(step, data.centerColor)])
     })
     // sort colors based on distance
     stepsDistance.sort((c1, c2) => {
