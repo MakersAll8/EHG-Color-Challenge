@@ -15,9 +15,19 @@ build website:
       - build/
 
 test artifact:
+  image: alpine
   stage: test
   script:
 #   favicon is attached by webpack
-    - grep "icon" ./build/index.html
+    - grep -q "icon" ./build/index.html
 #   bundle.js is attached by webpack
-    - grep "bundle.js" ./build/index.html
+    - grep -q "bundle.js" ./build/index.html
+#    you can potentially check last exit code by $ echo $?
+
+test website:
+  stage: test
+  script:
+    - npm install
+    - npm start
+#    download the website
+    - curl "http://localhost:9999" | grep -q "canvas"
