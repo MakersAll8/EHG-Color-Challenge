@@ -33,4 +33,4 @@ test website:
     - npm start &
     - sleep 3
 #    download the website
-    - curl "http://localhost:9999" | grep -q "canvas"
+    - curl "http://localhost:9999" | tac | tac | grep -q "canvas"
