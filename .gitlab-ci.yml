@@ -1,11 +1,23 @@
+stages:
+  - build
+  - test
 build website:
+  stage: build
 #  docker image to use
   image: node
   script:
     - npm install
-    - npm test
+#    - npm test
     - npm run build
 #  save build artifacts in build directory
   artifacts:
     paths:
       - build/
+
+test artifact:
+  stage: test
+  script:
+#   favicon is attached by webpack
+    - grep "icon" ./build/index.html
+#   bundle.js is attached by webpack
+    - grep "bundle.js" ./build/index.html
