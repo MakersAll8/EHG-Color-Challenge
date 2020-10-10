@@ -29,6 +29,8 @@ test website:
   stage: test
   script:
     - npm install
-    - npm start
+#    npm start alone would block CLI
+    - npm start &
+    - sleep 3
 #    download the website
     - curl "http://localhost:9999" | grep -q "canvas"
