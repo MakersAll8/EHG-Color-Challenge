@@ -25,6 +25,7 @@ test artifact:
 #    you can potentially check last exit code by $ echo $?
 
 test website:
+  image: node
   stage: test
   script:
     - npm install
