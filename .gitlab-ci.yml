@@ -3,6 +3,7 @@ build website:
   image: node
   script:
     - npm install
+    - npm test
     - npm run build
 #  save build artifacts in build directory
   artifacts:
