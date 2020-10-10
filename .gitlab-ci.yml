@@ -1,8 +1,10 @@
 build website:
+#  docker image to use
   image: node
   script:
     - npm install
     - npm run build
+#  save build artifacts in build directory
   artifacts:
     paths:
       - build/
