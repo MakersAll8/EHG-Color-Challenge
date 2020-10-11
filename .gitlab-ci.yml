@@ -4,7 +4,9 @@ image: node
 stages:
   - build
   - test
-  - deploy
+  - deploy surge
+  - deploy production
+  - deploy staging
 
 cache:
   #    using branch name as key
@@ -55,9 +57,64 @@ test website:
 # SURGE_LOGIN and SURGE TOKEN
 # sign up by running surge from terminal
 #deploy to surge:
-#  stage: deploy
+#  stage: deploy surge
 #  script:
 #    - npm install -g surge
 #    - surge --project ./build --domain xxx.surge.sh
 
+# run additional acceptance/integration tests on staging server
+# test external system, API compatibility etc
+deploy staging:
+  stage: deploy staging
+  environment:
+    name: staging
+    url: http://xxx-staging.surge.sh
+  script:
+    - npm install -g surge
+    - surge --project ./build --domain xxx-staging.surge.sh
 
+deploy production:
+  stage: deploy production
+  before_script:
+    ##
+    ## Install ssh-agent if not already installed, it is required by Docker.
+    ## (change apt-get to yum if you use an RPM-based image)
+    ##
+    - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
+
+    ##
+    ## Run ssh-agent (inside the build environment)
+    ##
+    - eval $(ssh-agent -s)
+
+    ##
+    ## Add the SSH key stored in SSH_PRIVATE_KEY variable to the agent store
+    ## We're using tr to fix line endings which makes ed25519 keys work
+    ## without extra base64 encoding.
+    ## https://gitlab.com/gitlab-examples/ssh-private-key/issues/1#note_48526556
+    ##
+    - echo "$XIAO_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+      ##
+      ## Create the SSH directory and give it the right permissions
+      ##
+      - mkdir -p ~/.ssh
+      - chmod 700 ~/.ssh
+
+    ##
+    ## Assuming you created the SSH_KNOWN_HOSTS variable, uncomment the
+    ## following two lines.
+    ##
+    - echo "$SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts
+      - chmod 644 ~/.ssh/known_hosts
+
+      ##
+      ## Optionally, if you will be using any Git commands, set the user name and
+    ## and email.
+    ##
+    # - git config --global user.email "user@example.com"
+    # - git config --global user.name "User name"
+  environment:
+    name: production
+    url: https://ehg.xiao.engineer
+  script:
+    - rsync -abvszP ./build root@xiao.engineer:/home/xiao/production_git/EHG-Color-Challenge/build
