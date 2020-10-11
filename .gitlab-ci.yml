@@ -14,6 +14,10 @@ cache:
   paths:
     - node_modules/
 
+variables:
+  STAGING_DOMAIN: https://staging.xiao.engineer
+  PRODUCTION_DOMAIN: https://ehg.xiao.engineer
+
 build website:
   stage: build
   script:
@@ -68,10 +72,10 @@ test website:
 #  stage: deploy staging
 #  environment:
 #    name: staging
-#    url: http://xxx-staging.surge.sh
+#    url: $STAGING_DOMAIN
 #  script:
 #    - npm install -g surge
-#    - surge --project ./build --domain xxx-staging.surge.sh
+#    - surge --project ./build --domain $STAGING_DOMAIN
 
 deploy production:
   stage: deploy production
@@ -115,6 +119,11 @@ deploy production:
     # - git config --global user.name "User name"
   environment:
     name: production
-    url: https://ehg.xiao.engineer
+    url: $PRODUCTION_DOMAIN
+#  # add when: manual so that production doesn't happen automatically
+#  # manually click start
+#  when: manual
+#  # allow_failure: false -> pipeline shows up as blocked instead of failed because of manual
+#  allow_failure: false
   script:
     - "rsync -abvszP ./build/ root@xiao.engineer:/home/xiao/production_git/EHG-Color-Challenge/build/"
