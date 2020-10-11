@@ -9,6 +9,9 @@ build website:
   stage: build
 #  docker image to use
   script:
+#    using stream editor to replace %%VERSION%% marker with the 8 places hash head
+#    if there are more than one occurrences, place a global flag g at the end of the regex
+    - sed -i "s/%%VERSION%%/$CI_COMMIT_SHORT_SHA/" ./build/index.html
     - npm install
 #    - npm test
     - npm run build
