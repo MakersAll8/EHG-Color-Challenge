@@ -41,7 +41,7 @@ test website:
   script:
     - npm install
     #    npm start alone would block CLI
-    - npm start &
+    - npm run node-express &
     - sleep 3
     #    download the website
     #    - apk add --no-cache curl

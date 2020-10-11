@@ -6,7 +6,8 @@
   "scripts": {
     "start": "webpack-dev-server --mode development --open --hot",
     "build": "webpack --mode production",
-    "test": "jest"
+    "test": "jest",
+    "node-express": "node node_express.js"
   },
   "author": "Xiao Li",
   "license": "ISC",
@@ -24,6 +25,7 @@
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.5",
     "enzyme-to-json": "^3.6.1",
+    "express": "^4.17.1",
     "file-loader": "^6.1.0",
     "html-webpack-plugin": "^4.5.0",
     "identity-obj-proxy": "^3.0.0",
