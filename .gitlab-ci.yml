@@ -120,6 +120,9 @@ deploy production:
   environment:
     name: production
     url: $PRODUCTION_DOMAIN
+  # only run deploy production when master branch is updated
+  only:
+    - master
 #  # add when: manual so that production doesn't happen automatically
 #  # manually click start
 #  when: manual
