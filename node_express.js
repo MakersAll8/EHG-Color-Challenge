@@ -17,5 +17,5 @@ app.get('*', function (req, res) {
 });
 
 app.listen(port, ()=>{
-    console.log('hall pass api server is up on port '+port)
+    console.log('api server is up on port '+port)
 })
