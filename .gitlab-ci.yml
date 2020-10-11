@@ -64,14 +64,14 @@ test website:
 
 # run additional acceptance/integration tests on staging server
 # test external system, API compatibility etc
-deploy staging:
-  stage: deploy staging
-  environment:
-    name: staging
-    url: http://xxx-staging.surge.sh
-  script:
-    - npm install -g surge
-    - surge --project ./build --domain xxx-staging.surge.sh
+#deploy staging:
+#  stage: deploy staging
+#  environment:
+#    name: staging
+#    url: http://xxx-staging.surge.sh
+#  script:
+#    - npm install -g surge
+#    - surge --project ./build --domain xxx-staging.surge.sh
 
 deploy production:
   stage: deploy production
@@ -96,19 +96,19 @@ deploy production:
     - echo "$XIAO_PRIVATE_KEY" | tr -d '\r' | ssh-add -
       ##
       ## Create the SSH directory and give it the right permissions
-      ##
-      - mkdir -p ~/.ssh
-      - chmod 700 ~/.ssh
+    ##
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
 
     ##
     ## Assuming you created the SSH_KNOWN_HOSTS variable, uncomment the
     ## following two lines.
     ##
     - echo "$SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts
-      - chmod 644 ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
 
-      ##
-      ## Optionally, if you will be using any Git commands, set the user name and
+    ##
+    ## Optionally, if you will be using any Git commands, set the user name and
     ## and email.
     ##
     # - git config --global user.email "user@example.com"
